@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="fr">
+<head>
+ <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+  <header>
+    <div class="bar">
+      <a href="index.html" title="Accueil MUDEO"><img src="images/logo-mudeo.png" alt="MUDEO" style="height:36px"></a>
+      <nav>
+        <a href="index.html">Accueil</a>
+        <a href="projets.html">Projets</a>
+        <a href="objectifs.html">Objectifs</a>
+        <a href="organigramme.html">Organigramme</a>
+        <a href="budget.html">Budget</a>
+        <a href="calendrier.html">Calendrier</a>
+        <a href="actualites.html">Actualités</a>
+        <a class="active" href="adhesion-dons.html">Adhésion & Dons</a>
+        <a href="infrastructures.html">Infrastructures</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main style="max-width:1100px;margin:24px auto;padding:0 16px">
+    <h1>Adhésion & Dons</h1>
+
+    <section class="form-card">
+      <h2>Adhérer à la MUDEO</h2>
+      <p class="note">Remplissez ce formulaire. Votre demande sera traitée par le Secrétariat et la Trésorerie.</p>
+
+      <!-- Netlify Forms -->
+      <form name="adhesion-mudeo" method="POST" data-netlify="true" netlify-honeypot="robot-field" action="/merci.html">
+        <p style="display:none"><label>Ne pas remplir : <input name="robot-field"></label></p>
+        <input type="hidden" name="form-name" value="adhesion-mudeo">
+
+        <div class="row">
+          <div>
+            <label>Nom & Prénoms *</label>
+            <input type="text" name="nom" required>
+          </div>
+          <div>
+            <label>Téléphone *</label>
+            <input type="tel" name="telephone" required>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>Email</label>
+            <input type="email" name="email">
+          </div>
+          <div>
+            <label>Village / Quartier</label>
+            <input type="text" name="localite">
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>Ville</label>
+            <input type="text" name="ville">
+          </div>
+          <div>
+            <label>Pays</label>
+            <input type="text" name="pays" value="Côte d’Ivoire">
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>Profession</label>
+            <input type="text" name="profession">
+          </div>
+          <div>
+            <label>Type d’adhésion *</label>
+            <select name="type" required>
+              <option value="">Choisir…</option>
+              <option>Adhésion standard (5 000 FCFA/an)</option>
+              <option>Jeune (2 000 FCFA/an)</option>
+              <option>Bienfaiteur / Donateur</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row-full">
+          <div>
+            <label>Message (facultatif)</label>
+            <textarea name="message" rows="4" placeholder="Observations…"></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>Consentement *</label>
+            <select name="consentement" required>
+              <option value="">Choisir…</option>
+              <option>J’accepte que mes données soient utilisées pour ma demande d’adhésion</option>
+            </select>
+          </div>
+          <div>
+            <label>Je confirme être originaire / résident d’Okrouyo *</label>
+            <select name="eligibilite" required>
+              <option value="">Choisir…</option>
+              <option>Oui</option>
+              <option>Non</option>
+            </select>
+          </div>
+        </div>
+
+        <p class="note">Après envoi, vous recevrez les instructions de paiement de la cotisation.</p>
+        <button type="submit">Envoyer ma demande d’adhésion</button>
+      </form>
+    </section>
+
+    <section class="box">
+      <h2>Soutenir par un don</h2>
+      <p><strong>Orange Money (dons) : 07 07 43 01 26</strong></p>
+      <p>Contact (Président) : <strong>07 07 47 70 47</strong></p>
+      <p class="note">Vous pouvez aussi préciser votre don dans le message du formulaire ci-dessus.</p>
+    </section>
+  </main>
+
+  <footer style="text-align:center;color:#475569;font-size:14px;margin:40px 0 24px">
+    © 2025 MUDEO — Mutuelle pour le Développement d’Okrouyo
+  </footer>
+</body>
+</html>

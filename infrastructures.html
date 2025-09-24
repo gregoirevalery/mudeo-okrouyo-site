@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+  <header>
+    <div class="bar">
+      <a href="index.html" title="Accueil MUDEO"><img src="images/logo-mudeo.png" alt="MUDEO"></a>
+      <nav>
+        <a  href="index.html">Accueil</a>
+        <a  href="projets.html">Projets</a>
+        <a  href="objectifs.html">Objectifs</a>
+        <a  href="organigramme.html">Organigramme</a>
+        <a  href="budget.html">Budget</a>
+        <a  href="calendrier.html">Calendrier</a>
+        <a  href="actualites.html">Actualités</a>
+        <a  href="adhesion-dons.html">Adhésion & Dons</a>
+        <a class="active" href="infrastructures.html">Infrastructures</a>
+        <a  href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+
+<section>
+  <h2>Infrastructures d’Okrouyo</h2>
+  <div class="content">
+    <p>Ajoutez vos photos dans le dossier <code>images/</code>, en respectant les noms ci-dessous. Cliquez sur une vignette pour agrandir.</p>
+    <div class="gallery" id="gal">
+
+      <figure class="tile">
+        <img src="images/brigade-okrouyo-1.jpg" data-full="images/brigade-okrouyo-1.jpg" alt="Brigade de gendarmerie (vue 1)">
+        <figcaption class="cap"><h3>Brigade de gendarmerie (vue 1)</h3><p>Accès principal et mur d’enceinte.</p></figcaption>
+      </figure>
+
+      <figure class="tile">
+        <img src="images/brigade-okrouyo-2.jpg" data-full="images/brigade-okrouyo-2.jpg" alt="Brigade de gendarmerie (vue 2)">
+        <figcaption class="cap"><h3>Brigade de gendarmerie (vue 2)</h3><p>Portail et insignes officiels.</p></figcaption>
+      </figure>
+
+      <figure class="tile">
+        <img src="images/dispensaire-okrouyo.jpg" data-full="images/dispensaire-okrouyo.jpg" alt="Dispensaire">
+        <figcaption class="cap"><h3>Dispensaire</h3><p>Centre de soins de première ligne.</p></figcaption>
+      </figure>
+
+      <figure class="tile">
+        <img src="images/maternite-okrouyo.jpg" data-full="images/maternite-okrouyo.jpg" alt="Maternité">
+        <figcaption class="cap"><h3>Maternité</h3><p>Accueil des mères et nouveau-nés.</p></figcaption>
+      </figure>
+
+      <figure class="tile">
+        <img src="images/pharmacie-emmanuelle.jpg" data-full="images/pharmacie-emmanuelle.jpg" alt="Pharmacie Sainte Emmanuelle">
+        <figcaption class="cap"><h3>Pharmacie Sainte Emmanuelle</h3><p>Dispensation de médicaments et conseils.</p></figcaption>
+      </figure>
+
+      <figure class="tile">
+        <img src="images/sous-prefecture-okrouyo.jpg" data-full="images/sous-prefecture-okrouyo.jpg" alt="Sous-préfecture">
+        <figcaption class="cap"><h3>Sous-préfecture</h3><p>Administration territoriale locale.</p></figcaption>
+      </figure>
+
+      <figure class="tile">
+        <img src="images/logement-sous-prefet.jpg" data-full="images/logement-sous-prefet.jpg" alt="Logement du sous-préfet">
+        <figcaption class="cap"><h3>Logement du sous-préfet</h3><p>Résidence administrative.</p></figcaption>
+      </figure>
+
+      <figure class="tile">
+        <img src="images/sda-okrouyo.jpg" data-full="images/sda-okrouyo.jpg" alt="Secteur de Développement Agricole">
+        <figcaption class="cap"><h3>Secteur de Développement Agricole</h3><p>Appui aux producteurs et filières locales.</p></figcaption>
+      </figure>
+
+      <figure class="tile">
+        <img src="images/station-service-1.jpg" data-full="images/station-service-1.jpg" alt="Station-service (1)">
+        <figcaption class="cap"><h3>Station-service (1)</h3><p>Distribution de carburant.</p></figcaption>
+      </figure>
+
+      <figure class="tile">
+        <img src="images/station-service-2.jpg" data-full="images/station-service-2.jpg" alt="Station-service (2)">
+        <figcaption class="cap"><h3>Station-service (2)</h3><p>Point d’approvisionnement local.</p></figcaption>
+      </figure>
+
+    </div>
+  </div>
+</section>
+
+<div class="lightbox" id="lb">
+  <button class="close" aria-label="Fermer" onclick="closeLb()">✕</button>
+  <img id="lbimg" alt="">
+</div>
+
+<script>
+  const lb=document.getElementById('lb');
+  const lbimg=document.getElementById('lbimg');
+  document.getElementById('gal').addEventListener('click',e=>{
+    const img=e.target.closest('img'); if(!img) return;
+    lbimg.src=img.dataset.full||img.src; lb.classList.add('active');
+  });
+  function closeLb(){ lb.classList.remove('active'); lbimg.removeAttribute('src'); }
+  lb.addEventListener('click',e=>{ if(e.target===lb) closeLb(); });
+  window.addEventListener('keydown',e=>{ if(e.key==='Escape') closeLb(); });
+</script>
+
+  </main>
+  <footer>© 2025 MUDEO — Mutuelle pour le Développement d’Okrouyo</footer>
+</body>
+</html>
