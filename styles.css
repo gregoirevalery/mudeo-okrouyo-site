@@ -94,4 +94,48 @@ footer {
     padding: 15px;
     margin-top: 30px;
     font-weight: bold;
+}/* === Galerie Infrastructures (uniformisation) === */
+.infra-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px,1fr));
+  gap:16px;
+  margin-top:12px;
 }
+
+.infra-card{
+  display:block;
+  background:#fff;
+  border:1px solid #e3e3e3;
+  border-radius:10px;
+  padding:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+  text-decoration:none;
+  color:inherit;
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.infra-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 16px rgba(0,0,0,.12);
+}
+
+.infra-card img{
+  width:100%;
+  height:180px;       /* hauteur identique pour toutes les vignettes */
+  object-fit:cover;   /* recadre proprement sans déformer */
+  border-radius:8px;
+  display:block;
+  margin-bottom:8px;
+}
+
+.infra-card h3{
+  margin:4px 0 4px;
+  font-size:16px;
+  color:#0f5d1a;      /* vert MUDEO */
+}
+.infra-card p{
+  margin:0;
+  font-size:13px;
+  color:#555;
+}
+
+
