@@ -639,10 +639,10 @@ section.active{display:block}
         <p>Connectez-vous pour accéder à l'espace d'expression du personnel.</p>
         <select id="selectNom">
           <option value="">— Choisir votre nom —</option>
-          <option value="Direction|Directeur|dir2025">Direction — Directeur</option>
-          <option value="M. Koné|Professeur de Français|kone2025">M. Koné — Prof. de Français</option>
-          <option value="Mme Traoré|Professeur de Mathématiques|traore2025">Mme Traoré — Prof. de Maths</option>
-          <option value="M. Coulibaly|Censeur|cens2025">M. Coulibaly — Censeur</option>
+          <option value="Direction|Chef d'Établissement|Principal@CMOK2024">Direction — Chef d'Établissement</option>
+          <option value="M. Koné|Professeur de Français|Kone@CMOK2024">M. Koné — Prof. de Français</option>
+          <option value="Mme Traoré|Professeur de Mathématiques|Traore@CMOK2024">Mme Traoré — Prof. de Maths</option>
+          <option value="M. Coulibaly|Éducateur|Coulibaly@CMOK2024">M. Coulibaly — Éducateur</option>
         </select>
         <input type="password" id="inputMdp" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')seConnecter()">
         <button class="btn-login" onclick="seConnecter()">Se connecter</button>
@@ -1321,7 +1321,7 @@ function ouvrirWhatsApp() {
 }
 
 // ===== ADMINISTRATION =====
-const ADMIN_MDP = 'admin@okrouyo2025';
+const ADMIN_MDP = 'Admin@CMOK2024';
 let currentUser = null;
 let isAdmin = false;
 let publications = [];
