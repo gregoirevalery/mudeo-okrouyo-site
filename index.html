@@ -305,6 +305,40 @@ section.active{display:block}
 .org-h-line-to-right{width:100%;height:2px;background:var(--vert-clair);position:relative}
 .org-h-line-to-right::after{content:'';position:absolute;right:-4px;top:-4px;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:8px solid var(--vert-clair)}
 </style>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDWubnI3otepqnesYF_UtP793rgoHFjdYw",
+      authDomain: "college-okrouyo.firebaseapp.com",
+      projectId: "college-okrouyo",
+      storageBucket: "college-okrouyo.firebasestorage.app",
+      messagingSenderId: "457883464074",
+      appId: "1:457883464074:web:b1dabb30a4f2d72c8a9873",
+      measurementId: "G-1T1NBDL38F"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Rendre db disponible globalement
+    window.firebaseDb = db;
+    window.firebaseCollection = collection;
+    window.firebaseAddDoc = addDoc;
+    window.firebaseOnSnapshot = onSnapshot;
+    window.firebaseQuery = query;
+    window.firebaseOrderBy = orderBy;
+    window.firebaseDeleteDoc = deleteDoc;
+    window.firebaseDoc = doc;
+
+    // Charger les publications depuis Firebase au démarrage
+    window.addEventListener('load', () => {
+      chargerPublicationsFirebase();
+    });
+  </script>
 </head>
 <body>
 
@@ -625,6 +659,9 @@ section.active{display:block}
       <p>Le Collège prévoit l'ouverture de la classe de 4ème pour 2026-2027. Les pré-inscriptions seront annoncées en temps voulu.</p>
       <div class="annonce-meta">📅 Administration · Collège Moderne d'Okrouyo</div>
     </div>
+    <!-- Publications de l'administration (temps réel) -->
+    <div id="annonces-firebase" style="margin-bottom:20px"></div>
+
     <div class="contact-annonce">
       <h3>📣 Publier une annonce</h3>
       <p>Commerces, services, événements locaux — touchez directement la communauté d'Okrouyo.<br>Contactez l'administrateur pour soumettre votre annonce.</p>
@@ -1385,7 +1422,7 @@ function seDeconnecter() {
   document.getElementById('selectNom').value = '';
 }
 
-function publier() {
+async function publier() {
   const titre = document.getElementById('pubTitre').value.trim();
   const contenu = document.getElementById('pubContenu').value.trim();
   const tag = document.getElementById('pubTag').value;
@@ -1393,19 +1430,90 @@ function publier() {
   if (!titre || !contenu) { alert('Veuillez remplir le titre et le contenu.'); return; }
 
   const pub = {
-    id: Date.now(),
     titre,
     contenu,
     tag,
     auteur: currentUser.nom,
     role: currentUser.role,
-    date: new Date().toLocaleDateString('fr-FR', { day:'2-digit', month:'long', year:'numeric' })
+    date: new Date().toLocaleDateString('fr-FR', { day:'2-digit', month:'long', year:'numeric' }),
+    timestamp: Date.now()
   };
 
-  publications.unshift(pub);
-  document.getElementById('pubTitre').value = '';
-  document.getElementById('pubContenu').value = '';
-  afficherPublications();
+  try {
+    // Sauvegarder dans Firebase
+    await window.firebaseAddDoc(window.firebaseCollection(window.firebaseDb, 'publications'), pub);
+    document.getElementById('pubTitre').value = '';
+    document.getElementById('pubContenu').value = '';
+    alert('✅ Publication envoyée avec succès !');
+  } catch(e) {
+    console.error(e);
+    // Si Firebase échoue, sauvegarder localement
+    pub.id = Date.now();
+    publications.unshift(pub);
+    afficherPublications();
+  }
+}
+
+async function supprimerPub(id, firebaseId) {
+  if (!isAdmin) return;
+  if (confirm('Supprimer cette publication ?')) {
+    try {
+      if (firebaseId) {
+        await window.firebaseDeleteDoc(window.firebaseDoc(window.firebaseDb, 'publications', firebaseId));
+      } else {
+        publications = publications.filter(p => p.id !== id);
+        afficherPublications();
+      }
+    } catch(e) {
+      console.error(e);
+      publications = publications.filter(p => p.id !== id);
+      afficherPublications();
+    }
+  }
+}
+
+function chargerPublicationsFirebase() {
+  if (!window.firebaseDb) return;
+  try {
+    const q = window.firebaseQuery(
+      window.firebaseCollection(window.firebaseDb, 'publications'),
+      window.firebaseOrderBy('timestamp', 'desc')
+    );
+    window.firebaseOnSnapshot(q, (snapshot) => {
+      publications = [];
+      snapshot.forEach((docSnap) => {
+        publications.push({ ...docSnap.data(), firebaseId: docSnap.id });
+      });
+      afficherPublications();
+      // Mettre à jour aussi la page Annonces
+      afficherAnnoncesFirebase();
+    });
+  } catch(e) {
+    console.error('Firebase non disponible:', e);
+  }
+}
+
+function afficherAnnoncesFirebase() {
+  const container = document.getElementById('annonces-firebase');
+  if (!container || publications.length === 0) return;
+  
+  const tagLabels = { info: 'Information', reunion: 'Réunion', urgent: 'Urgent' };
+  const tagColors = { info: 'vie', reunion: 'resultat', urgent: 'admin' };
+  
+  container.innerHTML = publications.map(p => `
+    <div class="actu-card">
+      <div class="actu-img">📋</div>
+      <div class="actu-body">
+        <span class="actu-tag ${tagColors[p.tag] || 'vie'}">${tagLabels[p.tag] || p.tag}</span>
+        <h3>${p.titre}</h3>
+        <p>${p.contenu}</p>
+        <div class="actu-meta">
+          <span>${p.date}</span>
+          <span class="actu-source">${p.auteur} — ${p.role}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
 }
 
 function supprimerPub(id) {
@@ -1439,7 +1547,7 @@ function afficherPublications() {
           <span class="pub-auteur">✍️ ${p.auteur} — ${p.role}</span>
           <span class="pub-tag ${p.tag}">${tagLabels[p.tag]}</span>
         </div>
-        ${isAdmin ? `<button class="btn-supprimer" style="display:inline-block" onclick="supprimerPub(${p.id})">🗑️ Supprimer</button>` : ''}
+        ${isAdmin ? `<button class="btn-supprimer" style="display:inline-block" onclick="supprimerPub(${p.id || 0}, '${p.firebaseId || ''}')">🗑️ Supprimer</button>` : ''}
       </div>
     </div>
   `).join('');
